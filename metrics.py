@@ -1,8 +1,8 @@
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 
-def custom_ap_at_k(actual, predicted_proba, classes, k):
-	predicted_k_top_tuples = sorted(zip(predicted_proba, classes), reverse=True)[:k]
+def custom_ap_at_k(actual, predicted_probas, classes, k):
+	predicted_k_top_tuples = sorted(zip(predicted_probas, classes), reverse=True)[:k]
 	top_labels = [item[1] for item in predicted_k_top_tuples]
 
 	for i,item in enumerate(top_labels):

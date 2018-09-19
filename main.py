@@ -6,37 +6,32 @@ from sklearn.model_selection import ShuffleSplit
 from sklearn.linear_model import LogisticRegression
 from sklearn.externals import joblib
 from sklearn.metrics import classification_report
-import feature_selection
+from sklearn.pipeline import Pipeline
 
-from preprocessing import normalize, get_product_data, parse_data, load_data
+from data.utils import load_data
+from preprocessing import preprocess_data
 from visualization import plot_learning_curves, get_errors_input
 from metrics import custom_map_at_k
+from feature_selection import get_features_extractor
 
 
-print 'Getting product data'
-products_data_map, products_name_map = get_product_data()
 print 'Loading data'
-x_train, x_test, Y_train, Y_test = load_data(products_data_map, products_name_map, 'train_2.csv', 'test_2.csv')
+train_data = load_data('train_2.csv')
+test_data = load_data('test_2.csv')
 
+print 'Preprocessing'
+X_train, Y_train = preprocess_data(train_data)
+X_test, Y_test = preprocess_data(test_data)
 
-print 'Seting up vectorizers'
-vectorizer_1, vectorizer_2, vectorizer_3 = feature_selection.setup(x_train, products_data_map)
+model_name = 'lr'
 
-print 'Building X_train and X_test'
-X_train_dense = normalize([feature_selection.build_feature_vector_dense(x) for x in x_train])
-X_train_sparse = [feature_selection.build_feature_vector_sparse(x) for x in x_train]
-
-X_test_dense = normalize([feature_selection.build_feature_vector_dense(x) for x in x_test])
-X_test_sparse = [feature_selection.build_feature_vector_sparse(x) for x in x_test]
-
-X_train = np.concatenate((X_train_dense, X_train_sparse), axis=1)
-X_test = np.concatenate((X_test_dense, X_test_sparse), axis=1)
-
-
-model_name = 'lr_1'
+# print 'Loading model'
 # model = joblib.load('./models/' + model_name + '_classifier.pkl')
 print 'Fitting model'
-model = LogisticRegression()
+model = Pipeline([
+	('features', get_features_extractor()),
+	('LogisticRegression', LogisticRegression())
+])
 model.fit(X_train, Y_train)
 print 'Saving model'
 joblib.dump(model, './models/' + model_name + '_classifier.pkl')
@@ -44,7 +39,7 @@ joblib.dump(model, './models/' + model_name + '_classifier.pkl')
 print 'Predicting Y_pred'
 Y_pred = model.predict(X_test)
 Y_pred_probs = model.predict_proba(X_test)
-errors_input = get_errors_input(x_test, Y_test, Y_pred)
+errors_input = get_errors_input(X_test, Y_test, Y_pred, Y_pred_probs, model.classes_)
 
 print 'Scoring'
 train_score = model.score(X_train, Y_train)
@@ -58,13 +53,10 @@ with open('./reports/' + model_name + '_report.txt', 'w') as report_file:
 	report = classification_report(Y_test, Y_pred)
 	report_file.write(report)
 	report_file.write('\n\n Train Score : %s   Test Score : %s   MAP@5_Train : %s   MAP@5_Test : %s \n' % (train_score, test_score, train_map_at_5, map_at_5))
-	report_file.write('\n\n\nErrors :\n\n')
+	report_file.write('\n\n\nErrors :\n')
+	report_file.write('\nPattern :  input --- predicted label --- AP@5 --- input index\n\n')
 	for index, item in enumerate(errors_input):
-		report_file.write('%s  ---   %s   ---   %s\n' % (item[0], item[1], item[2]))
-	report_file.write('\n\n\nBag of Words :\n\n')
-	report_file.write('%s \n' % vectorizer_1.get_feature_names())
-	report_file.write('%s \n' % vectorizer_2.get_feature_names())
-	report_file.write('%s \n' % vectorizer_3.get_feature_names())
+		report_file.write('%s  ---   %s   ---   %s   ---   %s\n' % (item[0], item[1], item[2], item[3]))
 
 print 'Train Score : ', train_score
 print 'Test Score : ', test_score
