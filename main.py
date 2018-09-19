@@ -23,7 +23,7 @@ print 'Preprocessing'
 X_train, Y_train = preprocess_data(train_data)
 X_test, Y_test = preprocess_data(test_data)
 
-model_name = 'lr_'
+model_name = 'lr'
 
 # print 'Loading model'
 # model = joblib.load('./models/' + model_name + '_classifier.pkl')
