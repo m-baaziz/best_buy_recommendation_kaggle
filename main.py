@@ -15,40 +15,40 @@ from metrics import custom_map_at_k
 from feature_selection import get_features_extractor
 
 
-print 'Loading data'
+print('Loading data')
 train_data = load_data('train_2.csv')
 test_data = load_data('test_2.csv')
 
-print 'Preprocessing'
+print('Preprocessing')
 X_train, Y_train = preprocess_data(train_data)
 X_test, Y_test = preprocess_data(test_data)
 
 model_name = 'lr'
 
-# print 'Loading model'
+# print('Loading model')
 # model = joblib.load('./models/' + model_name + '_classifier.pkl')
-print 'Fitting model'
+print('Fitting model')
 model = Pipeline([
 	('features', get_features_extractor()),
 	('LogisticRegression', LogisticRegression())
 ])
 model.fit(X_train, Y_train)
-print 'Saving model'
+print('Saving model')
 joblib.dump(model, './models/' + model_name + '_classifier.pkl')
 
-print 'Predicting Y_pred'
+print('Predicting Y_pred')
 Y_pred = model.predict(X_test)
 Y_pred_probs = model.predict_proba(X_test)
 errors_input = get_errors_input(X_test, Y_test, Y_pred, Y_pred_probs, model.classes_)
 
-print 'Scoring'
+print('Scoring')
 train_score = model.score(X_train, Y_train)
 test_score = model.score(X_test, Y_test)
 
 train_map_at_5 = custom_map_at_k(Y_train, model.predict_proba(X_train), model.classes_)
 map_at_5 = custom_map_at_k(Y_test, Y_pred_probs, model.classes_)
 
-print 'Reporting'
+print('Reporting')
 with open('./reports/' + model_name + '_report.txt', 'w') as report_file:
 	report = classification_report(Y_test, Y_pred)
 	report_file.write(report)
@@ -58,10 +58,10 @@ with open('./reports/' + model_name + '_report.txt', 'w') as report_file:
 	for index, item in enumerate(errors_input):
 		report_file.write('%s  ---   %s   ---   %s   ---   %s\n' % (item[0], item[1], item[2], item[3]))
 
-print 'Train Score : ', train_score
-print 'Test Score : ', test_score
-print 'MAP@5_Train : ', train_map_at_5
-print 'MAP@5_Test : ', map_at_5
+print('Train Score : ', train_score)
+print('Test Score : ', test_score)
+print('MAP@5_Train : ', train_map_at_5)
+print('MAP@5_Test : ', map_at_5)
 
 # cv = ShuffleSplit(n_splits=3, test_size=0.25, random_state=0)
 # plot = plot_learning_curves(model, 'Learning Curves (Logistic Regression Classifier)', X_train, Y_train, cv)

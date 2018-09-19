@@ -7,7 +7,7 @@ def custom_ap_at_k(actual, predicted_probas, classes, k):
 
 	for i,item in enumerate(top_labels):
 		if item == actual:
-			return 1.0/(i + 1.0)
+			return 1/(i + 1)
 
 	return 0
 
