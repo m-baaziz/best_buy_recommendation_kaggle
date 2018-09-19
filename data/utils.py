@@ -43,7 +43,7 @@ def parse_data(line):
 def load_data(filename):
 	with open(CSV_DIR + filename, 'r') as infile:
 		reader = csv.reader(infile, delimiter=',')
-		reader.next()
+		reader.__next__()
 		return [parse_data(line) for line in reader]
 
 def save_data(data, filename):
