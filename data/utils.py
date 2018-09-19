@@ -5,7 +5,7 @@ import sys
 
 import sys
 sys.path.append(os.path.abspath('..'))
-from best_buy_kaggle.utils import timestring_to_ms
+from best_buy_recommendation_kaggle.utils import timestring_to_ms
 
 CSV_DIR = os.path.abspath('./data/csv/') + '/'
 XML_DIR = os.path.abspath('./data/xml/') + '/'
