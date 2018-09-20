@@ -10,7 +10,7 @@ The goal of this project is to build a model that can predict which products (xb
 data source : https://www.kaggle.com/c/acm-sf-chapter-hackathon-small/data , including :
 
 - train.csv : training data set
-- small_product_data.xml : information on xbox products
+- small_product_data.xml : information about the xbox products
 
 ## Raw data schema
 
