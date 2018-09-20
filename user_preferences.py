@@ -33,7 +33,7 @@ def build_user_preferences(history, products):
 			preferences[line['user']]['customer_review_average'] += product['customer_review_average']
 			preferences[line['user']]['click_count'] += 1
 
-	for user_id, user_pref in preferences.iteritems():
+	for user_id, user_pref in preferences.items():
 		user_pref['price'] /= user_pref['click_count']
 		user_pref['time_from_release'] /= user_pref['click_count']
 		user_pref['preowned'] = int(user_pref['preowned'] >= user_pref['click_count'] / 2)

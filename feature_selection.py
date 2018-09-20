@@ -15,9 +15,8 @@ class ItemSelector(BaseEstimator, TransformerMixin):
 	def fit(self, x, y=None):
 		return self
 
-	def transform(self, data, y=None):
-		items = [item[self.key] for item in data]
-		return np.array(items).reshape(-1, 1) if self.reshape else items
+	def transform(self, df, y=None):
+		return np.array(df[self.key]).reshape(-1, 1) if self.reshape else df[self.key]
 
 class LettersVectorizer(TfidfVectorizer):
 	def build_tokenizer(self):

@@ -13,10 +13,10 @@ def timestring_to_ms(timestring):
 	return time.mktime(dt.timetuple()) * 1000
 
 def dict_list_mean_by_key(d, key):
-	return sum([v[key] for k,v in d.iteritems()]) / len(d)
+	return sum([v[key] for k,v in d.items()]) / len(d)
 
 def dict_list_mode_by_key(d, key):
-	items = [v[key] for k,v in d.iteritems()]
+	items = [v[key] for k,v in d.items()]
 	return max(items, key=items.count)	
 
 def keep_digits(s):

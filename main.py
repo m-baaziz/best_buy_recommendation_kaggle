@@ -13,11 +13,14 @@ from preprocessing import preprocess_data
 from visualization import plot_learning_curves, get_errors_input
 from metrics import custom_map_at_k
 from feature_selection import get_features_extractor
+from data_augmentation import augment_data
 
+print('Augmenting training data set')
+augment_data('train.csv', 'train_augmented.csv')
 
-print('Loading data')
-train_data = load_data('train_2.csv')
-test_data = load_data('test_2.csv')
+print('Loading training and testing set')
+train_data = load_data('train_augmented.csv')
+test_data = load_data('test.csv')
 
 print('Preprocessing')
 X_train, Y_train = preprocess_data(train_data)
@@ -36,7 +39,7 @@ model.fit(X_train, Y_train)
 print('Saving model')
 joblib.dump(model, './models/' + model_name + '_classifier.pkl')
 
-print('Predicting Y_pred')
+print('Predicting test set')
 Y_pred = model.predict(X_test)
 Y_pred_probs = model.predict_proba(X_test)
 errors_input = get_errors_input(X_test, Y_test, Y_pred, Y_pred_probs, model.classes_)
@@ -63,6 +66,7 @@ print('Test Score : ', test_score)
 print('MAP@5_Train : ', train_map_at_5)
 print('MAP@5_Test : ', map_at_5)
 
+# print('Computing Learning Curves')
 # cv = ShuffleSplit(n_splits=3, test_size=0.25, random_state=0)
 # plot = plot_learning_curves(model, 'Learning Curves (Logistic Regression Classifier)', X_train, Y_train, cv)
 # plot.show()

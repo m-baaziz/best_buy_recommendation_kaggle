@@ -1,6 +1,7 @@
 import string
 import random
 import time
+import pandas as pd
 from random import shuffle
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
@@ -40,20 +41,14 @@ def generate_data_from_product(sku, name):
 	}]
 
 
-def augment_data(train_filename, test_filename):
-	reload(sys)
-	sys.setdefaultencoding('utf-8')
-
+def augment_data(train_filename, new_train_filename):
 	products_data_map, products_name_map = get_product_data()
-	data, Y = load_data('data.csv')
+	data = load_data(train_filename)
 
-	generated_data = flatten([generate_data_from_product(sku, product['name']) for sku, product in products_data_map.iteritems()])
+	generated_data = flatten([generate_data_from_product(sku, product['name']) for sku, product in products_data_map.items()])
+	generated_data_df = pd.DataFrame(generated_data, columns=['user', 'sku', 'category', 'query', 'click_time', 'query_time'])
+	
+	new_train = pd.concat([data, generated_data_df]).sample(frac=1).reset_index(drop=True)
 
-	x_train, x_test, Y_train, Y_test = train_test_split(data, Y, test_size=0.3)
-
-	x_train += generated_data
-	shuffle(x_train)
-
-	save_data(x_train, train_filename)
-	save_data(x_test, test_filename)
+	save_data(new_train, new_train_filename)
 

@@ -2,6 +2,8 @@ import os
 import csv
 import xmltodict
 import sys
+import pandas as pd
+import numpy as np
 
 import sys
 sys.path.append(os.path.abspath('..'))
@@ -29,33 +31,9 @@ def get_product_data():
 
 		return products_id_data_map, products_name_id_map
 
-
-def parse_data(line):
-	return {
-		'user': line[0],
-		'sku': line[1],
-		'category': line[2],
-		'query': line[3],
-		'click_time': line[4],
-		'query_time': line[5]
-	}
-
 def load_data(filename):
-	with open(CSV_DIR + filename, 'r') as infile:
-		reader = csv.reader(infile, delimiter=',')
-		reader.__next__()
-		return [parse_data(line) for line in reader]
+	return pd.read_csv(CSV_DIR + filename, dtype={'sku': str}, parse_dates=[4, 5])
 
-def save_data(data, filename):
-	with open(CSV_DIR + filename + '.csv', 'w') as fd:
-		writer = csv.writer(fd, delimiter=',')
-		writer.writerow(['user', 'sku', 'category', 'query', 'click_time', 'query_time'])
-		for line in data:
-			writer.writerow([
-				line['user'],
-				line['sku'],
-				line['category'],
-				line['query'],
-				line['click_time'],
-				line['query_time']
-			])
+def save_data(df, filename):
+	df.to_csv(CSV_DIR + filename, index=False)
+
