@@ -1,6 +1,6 @@
 # Products Recommendation (Best buy data set)
 
-Best Buy Xbox games recommendation
+Best Buy Xbox games recommendation using scikit-learn and pandas
 
 
 ## Overview
