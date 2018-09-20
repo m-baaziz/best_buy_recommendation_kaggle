@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import learning_curve
+from sklearn.model_selection import learning_curve, cross_val_score
 
 from metrics import custom_ap_at_k
 
 def plot_learning_curves(estimator, title, x, y, cv):
+	print('setting up learning curves')
 	train_sizes=np.linspace(.1, 1.0, 5)
 
 	plt.figure()
@@ -12,6 +13,7 @@ def plot_learning_curves(estimator, title, x, y, cv):
 	plt.xlabel('Training exemples')
 	plt.ylabel('Score')
 
+	print('computing scores')
 	train_sizes, train_scores, test_scores = learning_curve(estimator, x, y, cv=cv, train_sizes=train_sizes)
 	train_scores_mean = np.mean(train_scores, axis=1)
 	train_scores_std = np.std(train_scores, axis=1)
@@ -25,6 +27,17 @@ def plot_learning_curves(estimator, title, x, y, cv):
 	plt.plot(train_sizes, test_scores_mean, 'o-', color='g', label='Cross-validation score')
 
 	plt.legend(loc='best')
+	return plt
+
+def plot_cv_results(estimators, title, x, y, cv):
+	print('getting cv results')
+	cv_results = [cross_val_score(model[1], x, y, cv=cv) for model in estimators]
+	print('plotting box plot')
+	fig = plt.figure()
+	plt.title(title)
+	ax = fig.add_subplot(111)
+	plt.boxplot(cv_results)
+	ax.set_xticklabels([model[0] for model in estimators])
 	return plt
 
 def get_errors_input(X, Y, Y_pred, Y_pred_probas, classes):
