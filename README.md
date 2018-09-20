@@ -32,11 +32,11 @@ Some games are not so popular and some never appear on the training set. To make
 
 To be relevant, the training data set had to go through some preprocessing steps :
 
-- Transform click_time and query_time into number of milliseconds from epoch
-- Add a new column : time_to_click = | click_time - query_time |
+- Transform click_time and query_time into number of milliseconds from epoch.
+- Add a new column : time_to_click = | click_time - query_time |.
 - The same game may appear twice with two different IDs (sku). Replace duplicate ID (sku) with the original.
 - Check if the product category described in the data set entry matches the one in the product description (small_product_data.xml). If not, remove the entry.
-- Check if the product has been clicked on less than 1 minute after the query was made. If not, remove the entry. This allows us to reduce the number of false positives (where the user clicks on a product after navigating on the website, and not after making a query).
+- Check if the product has been clicked on less than 1 minute after the query was made. If not, remove the entry. This allows us to reduce the number of false positives (where the user clicks on a product after navigating on the website, and not because of the query he or she made).
 
 ## Features Selection
 
