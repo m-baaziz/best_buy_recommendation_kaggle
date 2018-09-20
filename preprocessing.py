@@ -29,6 +29,7 @@ class DataTransformer(BaseEstimator, TransformerMixin):
 		click_time_series = (pd.to_datetime(df['click_time'], unit='ms').astype(np.int64) // 10**6)
 		query_time_series = (pd.to_datetime(df['query_time'], unit='ms').astype(np.int64) // 10**6)
 		new_df.at[:, 'time_to_click'] = abs(click_time_series - query_time_series)
+		new_df['sku'] = new_df['sku'].apply(self._get_uniq_sku)
 		return new_df.apply(lambda x: x if self._is_valid_item(x) else np.nan, axis=1).dropna().loc[:, ['user', 'sku', 'query', 'time_to_click']].reset_index(drop=True)
 
 
