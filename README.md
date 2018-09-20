@@ -1,4 +1,4 @@
-# Products Recommendation (Best buy data sets)
+# Products Recommendation (Best buy data set)
 
 Best Buy Xbox games recommendation
 
