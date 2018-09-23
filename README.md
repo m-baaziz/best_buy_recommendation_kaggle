@@ -70,4 +70,4 @@ After comparing different classification algorithms, the Logistic Regression (C 
 
 ## Results
 
-Train Score : 0.7888348554936149   Test Score : 0.7669995244888255   MAP@5 on Training set : 0.8749621107289237   MAP@5 on Testing set : 0.854979658688646 
+Train Score : 0.79   Test Score : 0.77   MAP@5 on Training set : 0.87   MAP@5 on Testing set : 0.85 
