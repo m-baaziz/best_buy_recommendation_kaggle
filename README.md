@@ -67,3 +67,7 @@ After comparing different classification algorithms, the Logistic Regression (C 
 **Learning Curves :**
 
 ![Project sketch](https://github.com/m-baaziz/best_buy_recommendation_kaggle/blob/master/reports/learning_curves.png)
+
+## Results
+
+Train Score : 0.7888348554936149   Test Score : 0.7669995244888255   MAP@5 on Training set : 0.8749621107289237   MAP@5 on Testing set : 0.854979658688646 
