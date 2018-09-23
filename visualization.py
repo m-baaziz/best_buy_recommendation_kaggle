@@ -41,6 +41,6 @@ def plot_cv_results(estimators, title, x, y, cv):
 	return plt
 
 def get_errors_input(X, Y, Y_pred, Y_pred_probas, classes):
-	errors = [(v, Y_pred[i], custom_ap_at_k(Y[i], Y_pred_probas[i], classes, 5), i) for i,v in enumerate(X) if Y[i] != Y_pred[i]]
+	errors = [(X.loc[i, :].to_dict(), Y_pred[i], custom_ap_at_k(Y[i], Y_pred_probas[i], classes, 5), i) for i in range(len(X)) if Y[i] != Y_pred[i]]
 	errors.sort(key = lambda x: x[2])
 	return errors
