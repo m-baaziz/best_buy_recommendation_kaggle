@@ -1,6 +1,6 @@
-# Products Recommendation (Best buy data sets)
+# Products Recommendation (Best buy data set)
 
-Best Buy Xbox games recommendation
+Best Buy Xbox games recommendation using scikit-learn and pandas
 
 
 ## Overview
@@ -10,7 +10,7 @@ The goal of this project is to build a model that can predict which products (xb
 data source : https://www.kaggle.com/c/acm-sf-chapter-hackathon-small/data , including :
 
 - train.csv : training data set
-- small_product_data.xml : information on xbox products
+- small_product_data.xml : information about the xbox products
 
 ## Raw data schema
 
@@ -32,11 +32,11 @@ Some games are not so popular and some never appear on the training set. To make
 
 To be relevant, the training data set had to go through some preprocessing steps :
 
-- Transform click_time and query_time into number of milliseconds from epoch
-- Add a new column : time_to_click = | click_time - query_time |
+- Transform click_time and query_time into number of milliseconds from epoch.
+- Add a new column : time_to_click = | click_time - query_time |.
 - The same game may appear twice with two different IDs (sku). Replace duplicate ID (sku) with the original.
 - Check if the product category described in the data set entry matches the one in the product description (small_product_data.xml). If not, remove the entry.
-- Check if the product has been clicked on less than 1 minute after the query was made. If not, remove the entry. This allows us to reduce the number of false positives (where the user clicks on a product after navigating on the website, and not after making a query).
+- Check if the product has been clicked on less than 1 minute after the query was made. If not, remove the entry. This allows us to reduce the number of false positives (where the user clicks on a product after navigating on the website, and not because of the query he or she made).
 
 ## Features Selection
 
@@ -67,3 +67,10 @@ After comparing different classification algorithms, the Logistic Regression (C 
 **Learning Curves :**
 
 ![Project sketch](https://github.com/m-baaziz/best_buy_recommendation_kaggle/blob/master/reports/learning_curves.png)
+
+## Results
+
+- Accuracy on Training set : 0.79
+- Accuracy on Testing set : 0.77
+- MAP@5 on Training set : 0.87
+- MAP@5 on Testing set : 0.85 
